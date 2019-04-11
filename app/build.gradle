@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply from: "$rootDir/tools/versions.gradle"
 
 android {
     compileSdkVersion 28
@@ -13,6 +13,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "BASE_URL", "\"https://api.chucknorris.io/\""
     }
     buildTypes {
         release {
@@ -23,11 +24,34 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
-    implementation 'androidx.core:core-ktx:1.1.0-alpha05'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+    implementation deps.kotlin.stdlib
+
+    implementation deps.google.appcompat
+    implementation deps.google.lifecycle
+    implementation deps.google.constraint
+    implementation deps.google.material
+
+    implementation deps.squareup.okhttp
+    implementation deps.squareup.okhttp_logging
+    implementation deps.squareup.retrofit
+    implementation deps.squareup.retrofit_converter_gson
+    implementation deps.squareup.retrofit_rx_adapter
+
+    implementation deps.rx.rx_android
+    implementation deps.rx.rx_java
+
+    implementation deps.glide.runtime
+    kapt deps.glide.compiler
+
+    implementation deps.dagger.runtime
+    implementation deps.dagger.android_support
+    kapt deps.dagger.compiler
+    kapt deps.dagger.android_processor
+}
+
+//Test dependencies
+dependencies {
+    deps.test.each {
+        add(it.configuration, it.dependency)
+    }
 }

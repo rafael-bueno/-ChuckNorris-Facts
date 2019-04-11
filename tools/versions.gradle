@@ -1,0 +1,90 @@
+def version = [:]
+
+version.kotlin = '1.3.21'
+version.lifecycle = '2.0.0'
+version.retrofit = '2.5.0'
+version.okhttp = '3.12.1'
+version.dagger = '2.17'
+version.constraint = '1.1.3'
+version.appcompat = '1.1.0-alpha04'
+version.material = '1.1.0-alpha05'
+version.rx_android = '2.1.0'
+version.rx_java = '2.2.0'
+version.glide = '4.9.0'
+version.circle_indicator = '2.1.0'
+version.junit = '4.12'
+version.mockito = '2.16.0'
+version.mock_web_server = '3.9.1'
+version.espresso = '3.2.0-alpha02'
+version.runner = '1.1.2-alpha02'
+version.request_matcher = '2.2.0'
+version.gradle = '3.3.2'
+
+def dependencies = [:]
+
+def gradle = "com.android.tools.build:gradle:$version.gradle"
+
+def kotlin = [:]
+kotlin.gradle_plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version.kotlin"
+kotlin.stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version.kotlin"
+
+def google = [:]
+google.appcompat = "androidx.appcompat:appcompat:$version.appcompat"
+google.lifecycle = "androidx.lifecycle:lifecycle-extensions:$version.lifecycle"
+google.constraint = "androidx.constraintlayout:constraintlayout:$version.constraint"
+google.material = "com.google.android.material:material:$version.material"
+
+def squareup = [:]
+squareup.okhttp = "com.squareup.okhttp3:okhttp:$version.okhttp"
+squareup.okhttp_logging = "com.squareup.okhttp3:logging-interceptor:$version.okhttp"
+squareup.retrofit = "com.squareup.retrofit2:retrofit:$version.retrofit"
+squareup.retrofit_converter_gson = "com.squareup.retrofit2:converter-gson:$version.retrofit"
+squareup.retrofit_rx_adapter = "com.squareup.retrofit2:adapter-rxjava2:$version.retrofit"
+
+def rx = [:]
+rx.rx_android = "io.reactivex.rxjava2:rxandroid:$version.rx_android"
+rx.rx_java = "io.reactivex.rxjava2:rxjava:$version.rx_java"
+
+def glide = [:]
+glide.runtime = "com.github.bumptech.glide:glide:$version.glide"
+glide.compiler = "com.github.bumptech.glide:compiler:$version.glide"
+
+def dagger = [:]
+dagger.runtime = "com.google.dagger:dagger:$version.dagger"
+dagger.android_support = "com.google.dagger:dagger-android-support:$version.dagger"
+dagger.compiler = "com.google.dagger:dagger-compiler:$version.dagger"
+dagger.android_processor = "com.google.dagger:dagger-android-processor:$version.dagger"
+
+def test = [
+
+        [configuration: "testImplementation", dependency: "junit:junit:$version.junit"],
+        [configuration: "testImplementation", dependency: "org.mockito:mockito-inline:$version.mockito"],
+        [configuration: "testImplementation", dependency: "android.arch.core:core-testing:$version.lifecycle"],
+
+        [configuration: "androidTestImplementation", dependency: "androidx.test:runner:$version.runner"],
+        [configuration: "androidTestImplementation", dependency: "androidx.test:orchestrator:$version.runner"],
+        [configuration: "androidTestImplementation", dependency: "androidx.test.espresso:espresso-core:$version.espresso"],
+        [configuration: "androidTestImplementation", dependency: "androidx.test.espresso:espresso-contrib:$version.espresso"],
+        [configuration: "androidTestImplementation", dependency: "androidx.test:rules:$version.runner"],
+        [configuration: "androidTestImplementation", dependency: "androidx.test.espresso:espresso-intents:$version.espresso"],
+        [configuration: "androidTestImplementation", dependency: "com.squareup.okhttp3:mockwebserver:$version.mock_web_server"],
+        [configuration: "androidTestImplementation", dependency: "br.com.concretesolutions:requestmatcher:$version.request_matcher"],
+
+        [configuration: "kaptAndroidTest", dependency: "com.google.dagger:dagger-android-processor:$version.dagger"],
+        [configuration: "kaptAndroidTest", dependency: "com.google.dagger:dagger-compiler:$version.dagger"],
+        [configuration: "kaptAndroidTest", dependency: "androidx.test.espresso:espresso-intents:$version.espresso"],
+        [configuration: "kaptAndroidTest", dependency: "androidx.test.espresso:espresso-core:$version.espresso"],
+        [configuration: "androidTestUtil", dependency: "androidx.test:orchestrator:$version.runner"]
+]
+
+
+dependencies.kotlin = kotlin
+dependencies.google = google
+dependencies.squareup = squareup
+dependencies.rx = rx
+dependencies.glide = glide
+dependencies.dagger = dagger
+dependencies.test = test
+dependencies.gradle = gradle
+
+ext.deps = dependencies
