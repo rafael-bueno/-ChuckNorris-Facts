@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ChuckNorris Facts</string>
+    <string name="error_default_message">Deu ruim!</string>
 </resources>
