@@ -20,11 +20,14 @@ import javax.inject.Inject
 
 private const val FLIPPER_CONTENT_POSITION = 0
 private const val FLIPPER_LOADING_POSITION = 1
+private const val JOKE_STATE = "JOKE"
 
 class JokeActivity : AppCompatActivity() {
 
     @Inject
     lateinit var factory: JokeViewModel.JokeViewModelFactory
+
+    private lateinit var joke: Joke
 
     private val viewModel by lazy { ViewModelProviders.of(this, factory).get(JokeViewModel::class.java) }
     private val imageJoke by lazy { findViewById<ImageView>(R.id.image_joke) }
@@ -37,10 +40,23 @@ class JokeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_joke)
         initViewModel()
+        if (savedInstanceState != null && savedInstanceState.containsKey(JOKE_STATE)) {
+            joke = savedInstanceState.getParcelable(JOKE_STATE)!!
+            bindScreen(joke)
+        } else {
+            viewModel.getJokeByCategory(intent.getStringExtra(EXTRA_CATEGORY))
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        if (::joke.isInitialized) {
+            outState.putParcelable(JOKE_STATE, joke)
+        }
     }
 
     private fun initViewModel() {
-        viewModel.apply {
+        with(viewModel) {
             errorLiveData.observe(this@JokeActivity) {
                 toast(R.string.error_default_message)
             }
@@ -53,10 +69,10 @@ class JokeActivity : AppCompatActivity() {
             }
 
             jokeLiveData.observe(this@JokeActivity) {
-                bindScreen(it)
+                this@JokeActivity.joke = it
+                bindScreen(this@JokeActivity.joke)
             }
-
-        }.getJokeByCategory(intent.getStringExtra(EXTRA_CATEGORY))
+        }
     }
 
     private fun bindScreen(joke: Joke) {
